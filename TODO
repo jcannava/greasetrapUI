@@ -1,3 +1,2 @@
 - Check all Create Forms for valid values (i.e. not null)
-- Create, Update, Delete for Nodes
-
+- Print Cluster and Role name instead of ID's (node)
