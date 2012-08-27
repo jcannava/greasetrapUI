@@ -20,13 +20,27 @@
             <form action="{{ nodes }}/create" method="POST">
                 <table width="100%" border=0>
                  <tr>
-                  <td>Name:</td>
-                  <td><input type=text name=node_name></td>
+                  <td>Hostname:</td>
+                  <td><input type=text name=hostname></td>
                  </tr>
                  <tr>
-                  <td>Description:</td>
-                  <td><input type=text name=node_descr></td>
-                 </tr>
+                  <td>Cluster Assignment:</td>
+                  <td><select name=cluster>
+                      {% for i in cluster_list['clusters'] %}
+                              <option value="{{ i['id'] }}">{{ i['name'] }}</option>
+                      {% endfor %}
+                      </select>
+                  </td>
+                 </tr>        
+                 <tr>
+                  <td>Role Assignment:</td>
+                  <td><select name=role>
+                      {% for i in role_list['roles'] %}
+                              <option value="{{ i['id'] }}">{{ i['name'] }}</option>
+                      {% endfor %}
+                      </select>
+                    </td>
+                   </tr>
                  <tr>
                   <td></td>
                   <td><input type=submit name='create' value='Create'></td>
@@ -36,22 +50,18 @@
           <h2>List of Nodes:</h2><hr>
           <table border=0 cellspacing=0 cellpadding=0 width=100%>
          <tr>
-           <td class=tableheader>Description</td>
-           <td class=tableheader>Name</td>
-           <td class=tableheader>Extra</td>
+           <td class=tableheader>Hostname</td>
+           <td class=tableheader>Cluster_ID</td>
+           <td class=tableheader>Role_ID</td>
            <td class=tableheader>Update</td>
            <td class=tableheader>Delete</td>
          </tr>
           {% if data %}
              {% for i in data['nodes'] %}
                  <tr>
-                 {% for k,v in i.items() %}
-                     {% if k == "id" %}
-                         {% set id = v %}
-                     {% else %}
-                         <td class=tablerow>{{ v }}</td>
-                     {% endif %}
-                 {% endfor %}
+                 <td class=tablerow>{{ i['hostname'] }}</td>
+                 <td class=tablerow>{{ i['cluster_id'] }} </td>
+                 <td class=tablerow>{{ i['role_id'] }}</td>
                  <td class=tablerow><a class=tablelink href="{{ nodes }}/update/{{ i['id'] }}">Update</a></td>
                  <td class=tablerow><a class=tablelink href="{{ nodes }}/delete/{{ i['id'] }}">Delete</a></td>
                  </tr>
@@ -66,12 +76,26 @@
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
-                  <td><input type=text name=node_name value="{{ data['name'] }}"></td>
+                  <td><input type=text name=hostname value="{{ data['hostname'] }}"></td>
                  </tr>
                  <tr>
-                  <td>Description:</td>
-                  <td><input type=text name=node_descr value="{{ data['description'] }}"></td>
+                  <td>Cluster Assignment:</td>
+                  <td><select name=cluster>
+                      {% for i in cluster_list['clusters'] %}
+                              <option value="{{ i['id'] }}">{{ i['name'] }}</option>
+                      {% endfor %}
+                      </select>
+                  </td>
                  </tr>
+                 <tr>
+                  <td>Role Assignment:</td>
+                  <td><select name=role>
+                      {% for i in role_list['roles'] %}
+                              <option value="{{ i['id'] }}">{{ i['name'] }}</option>
+                      {% endfor %}
+                      </select>
+                    </td>
+                   </tr>
                  <tr>
                   <td></td>
                   <td><input type=submit name='update' value='Update'></td>

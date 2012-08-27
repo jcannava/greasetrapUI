@@ -17,7 +17,7 @@ def build_request(url=None, verb=None, data=None):
     resp, content = conn.request(url, verb, data, headers)
     return content
 
-def templatify(htmlfile=None, action=None, extra=None):
+def templatify(htmlfile=None, action=None, extra=None, cluster_data=None, role_data=None):
     if htmlfile == 'cluster.html':
         return render_template(htmlfile,
                            clusters=url_for('clusters'),
@@ -33,7 +33,9 @@ def templatify(htmlfile=None, action=None, extra=None):
                            roles=url_for('roles'),
                            css=url_for('static', filename='site.css'),
                            action=action,
-                           data=extra)
+                           data=extra,
+                           cluster_list=cluster_data,
+                           role_list = role_data)
     elif htmlfile == 'role.html':
         return render_template(htmlfile,
                            clusters=url_for('clusters'),
@@ -102,11 +104,54 @@ def clusters(verb=None, id=None):
 @app.route('/nodes/<verb>/<id>', methods=['GET', 'POST'])
 def nodes(verb=None, id=None):
     url = "http://%s:%d/nodes/" % (roush_address, roush_port)
+    cluster_url = "http://%s:%d/clusters/" % (roush_address, roush_port)
+    roles_url = "http://%s:%d/roles/" % (roush_address, roush_port)
+
     if verb == 'list' or verb == None:
         return templatify(htmlfile='node.html',
                           action='List',
                           extra=json.loads(build_request(url, "GET")))
-    ### TODO: Create, Update, Delete mechanisms.
+
+    if verb == 'create' and request.method == "GET":
+        return templatify(htmlfile='node.html', 
+                          action='Create', 
+                          cluster_data=json.loads(build_request(cluster_url, "GET")), 
+                          role_data=json.loads(build_request(roles_url, "GET")))
+
+    elif verb == 'create' and request.method == "POST":
+        jdata = json.dumps({"hostname": request.form['hostname'],
+                            "cluster_id": request.form['cluster'],
+                            "role_id": request.form['role']}).encode('utf-8')
+        build_request(url, "POST", jdata)
+        return templatify(htmlfile='node.html',
+                          action='List',
+                          extra=json.loads(build_request(url,"GET"))) 
+       
+    elif verb == 'update' and id != None and request.method == "GET":
+        update_url = url + id
+        return templatify(htmlfile='node.html',
+                          action='Update',
+                          extra=json.loads(build_request(update_url, "GET")),
+                          cluster_data=json.loads(build_request(cluster_url, "GET")),
+                          role_data=json.loads(build_request(roles_url, "GET")))
+
+    elif verb == 'update' and id != None and request.method == "POST":
+        update_url = url + id
+        pprint(request.form)
+        jdata = json.dumps({"hostname": request.form['hostname'],
+                            "cluster_id": request.form['cluster'],
+                            "role_id": request.form['role']}).encode('utf-8')
+        build_request(update_url, "PUT", jdata)
+        return templatify(htmlfile='node.html',
+                          action='List',
+                          extra=json.loads(build_request(url, "GET")))
+
+    elif verb == 'delete':
+        delete_url = url + id
+        build_request(delete_url, "DELETE")
+        return templatify(htmlfile='node.html',
+                          action='List',
+                          extra=json.loads(build_request(url,"GET")))
 
 @app.route('/roles')
 @app.route('/roles/<verb>', methods=['GET', 'POST'])
