@@ -1,5 +1,5 @@
 from ConfigParser import ConfigParser
-from flask import Flask
+from flask import Flask, render_template, url_for
 from pprint import pprint
 from clusters import clusters
 
@@ -53,43 +53,8 @@ class GreaseTrapUI(Flask):
         super(GreaseTrapUI, self).run(host=self.config['main']['bind_address'],
                                       port=self.config['main']['bind_port'])
 
-    def build_request(url=None, verb=None, data=None):
+    def build_request(self, url=None, verb=None, data=None):
         headers = {"Content-Type": "application/json"}
         conn = httplib2.Http()
         resp, content = conn.request(url, verb, data, headers)
         return content
-
-    def templatify(htmlfile=None, action=None, extra=None, cluster_data=None, role_data=None):
-        if htmlfile == 'cluster.html':
-            return render_template(htmlfile,
-                               clusters=url_for('clusters'),
-                               nodes=url_for('nodes'),
-                               roles=url_for('roles'),
-                               css=url_for('static', filename='site.css'),
-                               action=action,
-                               data=extra)
-        elif htmlfile == 'node.html':
-            return render_template(htmlfile,
-                               clusters=url_for('clusters'),
-                               nodes=url_for('nodes'),
-                               roles=url_for('roles'),
-                               css=url_for('static', filename='site.css'),
-                               action=action,
-                               data=extra,
-                               cluster_list=cluster_data,
-                               role_list = role_data)
-        elif htmlfile == 'role.html':
-            return render_template(htmlfile,
-                               clusters=url_for('clusters'),
-                               nodes=url_for('nodes'),
-                               roles=url_for('roles'),
-                               css=url_for('static', filename='site.css'),
-                               action=action,
-                               data=extra)
-        else:
-            return render_template('index.html',
-                               clusters=url_for('clusters'),
-                               nodes=url_for('nodes'),
-                               roles=url_for('roles'),
-                               css=url_for('static', filename='site.css'))
-
