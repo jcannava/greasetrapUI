@@ -21,7 +21,15 @@ def list_clusters():
                            extra=data)
 
 # TODO: Template and route for cluster details
-# @clusters.route('/<id', methods=["GET"]
+@clusters.route('/<id>', methods=["GET"])
+def cluster_detail(id=None):
+    cluster_url = current_app.base_url + "clusters/"
+    detail_url = cluster_url + id
+    data = json.loads(current_app.build_request(detail_url, "GET"))
+    return cluster_template(htmlfile=htmlfile,
+                            action='Detail',
+                            extra=data)
+
 
 @clusters.route('/create', methods=["GET", "POST"])
 def create_clusters():
