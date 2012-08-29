@@ -2,6 +2,7 @@ from ConfigParser import ConfigParser
 from flask import Flask, render_template, url_for
 from pprint import pprint
 from clusters import clusters
+from nodes import nodes
 
 import logging
 import json
@@ -44,6 +45,7 @@ class GreaseTrapUI(Flask):
             LOG.setLevel(defaults['main']['loglevel'])
 
         self.register_blueprint(clusters, url_prefix='/clusters')
+        self.register_blueprint(nodes, url_prefix='/nodes')
         self.testing = True
         self.base_url = "http://%s:%d/" % ( 
                             self.config['main']['roush_address'], 
