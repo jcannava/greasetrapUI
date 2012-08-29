@@ -5,7 +5,7 @@ import json
 clusters = Blueprint('clusters', __name__, template_folder='templates', static_folder='static')
 htmlfile = 'cluster.html'
 
-def cluster_template(htmlfile=None, extra=None, action=None, data=None):
+def cluster_template(htmlfile=None, extra=None, action=None):
     return render_template(htmlfile,
                            clusters=url_for('.index'),
                            css=url_for('.static', filename='site.css'),
