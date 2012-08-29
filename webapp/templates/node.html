@@ -17,7 +17,7 @@
   <div id="text">
       {% if action == 'Create' %}
             <h2>Node Creation</h2>
-            <form action="{{ nodes }}/create" method="POST">
+            <form action="{{ nodes }}create" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Hostname:</td>
@@ -62,17 +62,17 @@
                  <td class=tablerow>{{ i['hostname'] }}</td>
                  <td class=tablerow>{{ i['cluster_id'] }} </td>
                  <td class=tablerow>{{ i['role_id'] }}</td>
-                 <td class=tablerow><a class=tablelink href="{{ nodes }}/update/{{ i['id'] }}">Update</a></td>
-                 <td class=tablerow><a class=tablelink href="{{ nodes }}/delete/{{ i['id'] }}">Delete</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ nodes }}update/{{ i['id'] }}">Update</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ nodes }}delete/{{ i['id'] }}">Delete</a></td>
                  </tr>
              {% endfor %}
           {% endif %} 
          </table>
          <br><br>
-         <h3><a class=tablelink href="{{ nodes }}/create">Create new node</a></h3>
+         <h3><a class=tablelink href="{{ nodes }}create">Create new node</a></h3>
       {% elif action == 'Update' %}
                       <h2>Node Update</h2>
-            <form action="{{ nodes }}/update/{{ data['id'] }}" method="POST">
+            <form action="{{ nodes }}update/{{ data['id'] }}" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
