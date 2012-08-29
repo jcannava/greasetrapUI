@@ -36,8 +36,8 @@
          <h2> List of Clusters: </h2><hr>
          <table border=0 cellspacing=0 cellpadding=0 width=100%>
          <tr>
-           <td class=tableheader>Description</td>
            <td class=tableheader>Name</td>
+           <td class=tableheader>Description</td>
            <td class=tableheader>Extra</td>
            <td class=tableheader>Update</td>
            <td class=tableheader>Delete</td>
@@ -45,13 +45,9 @@
           {% if data %}
              {% for i in data['clusters'] %}
                  <tr>
-                 {% for k,v in i.items() %}
-                     {% if k == "id" %}
-                         {% set id = v %}
-                     {% else %}
-                         <td class=tablerow>{{ v }}</td>
-                     {% endif %}
-                 {% endfor %}
+                 <td class=tablerow>{{ i['name'] }}</td>
+                 <td class=tablerow>{{ i['description'] }}</td>
+                 <td class=tablerow>{{ i['extra'] }}</td>
                  <td class=tablerow><a class=tablelink href="{{ clusters }}update/{{ i['id'] }}">Update</a></td>
                  <td class=tablerow><a class=tablelink href="{{ clusters }}delete/{{ i['id'] }}">Delete</a></td>
         	 </tr>
