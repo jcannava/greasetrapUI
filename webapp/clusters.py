@@ -20,7 +20,6 @@ def list_clusters():
                            action='List',
                            extra=data)
 
-# TODO: Template and route for cluster details
 @clusters.route('/<id>', methods=["GET"])
 def cluster_detail(id=None):
     cluster_url = current_app.base_url + "clusters/"
