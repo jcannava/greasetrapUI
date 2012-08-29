@@ -2,7 +2,7 @@ from pprint import pprint
 from flask import Blueprint, Flask, session, render_template, url_for, request, current_app
 import json
 
-clusters = Blueprint('nodes', __name__, template_folder='templates', static_folder='static')
+nodes = Blueprint('nodes', __name__, template_folder='templates', static_folder='static')
 htmlfile = 'node.html'
 
 def node_template(htmlfile=None, extra=None, action=None, cluster_data=None, role_data=None):
