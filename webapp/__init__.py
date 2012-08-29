@@ -3,6 +3,7 @@ from flask import Flask, render_template, url_for
 from pprint import pprint
 from clusters import clusters
 from nodes import nodes
+from roles import roles
 
 import logging
 import json
@@ -46,6 +47,7 @@ class GreaseTrapUI(Flask):
 
         self.register_blueprint(clusters, url_prefix='/clusters')
         self.register_blueprint(nodes, url_prefix='/nodes')
+        self.register_blueprint(roles, url_prefix='/roles')
         self.testing = True
         self.base_url = "http://%s:%d/" % ( 
                             self.config['main']['roush_address'], 
