@@ -12,14 +12,28 @@ def cluster_template(htmlfile=None, extra=None, action=None, data=None):
                            action=action,
                            data=extra) 
 
+@clusters.route('/', endpoint='index', methods=["GET"])
 def list_clusters():
     cluster_url = current_app.base_url + "clusters/"
     data = json.loads(current_app.build_request(cluster_url, "GET"))
     return cluster_template(htmlfile=htmlfile,
                            action='List',
                            extra=data)
-clusters.add_url_rule('/', 'index', list_clusters)
 
-def create_clusters():
-    return cluster_template(htmlfile=htmlfile, action='Create')
-clusters.add_url_rule('/create', 'create', create_clusters)
+@clusters.route('/create', methods=["GET", "POST"])
+def create_clusters(verb=None, id=None):
+    cluster_url = current_app.base_url + "clusters/"
+
+    if request.method == "GET":
+        return cluster_template(htmlfile=htmlfile, action='Create')
+
+    elif request.method == "POST":
+        jdata = json.dumps({"name": request.form['cluster_name'],
+                            "description": request.form['cluster_descr']}).encode('utf-8')
+        current_app.build_request(cluster_url, "POST", jdata)
+        data = json.loads(current_app.build_request(cluster_url, "GET"))
+        return cluster_template(htmlfile=htmlfile,
+                                action='List',
+                                extra=data)
+    else:
+        return cluster_template(htmlfile=htmlfile, action='List')
