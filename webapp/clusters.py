@@ -21,7 +21,7 @@ def list_clusters():
                            extra=data)
 
 @clusters.route('/create', methods=["GET", "POST"])
-def create_clusters(verb=None, id=None):
+def create_clusters(id=None):
     cluster_url = current_app.base_url + "clusters/"
 
     if request.method == "GET":
