@@ -52,8 +52,8 @@
                          <td class=tablerow>{{ v }}</td>
                      {% endif %}
                  {% endfor %}
-                 <td class=tablerow><a class=tablelink href="{{ clusters }}/update/{{ i['id'] }}">Update</a></td>
-                 <td class=tablerow><a class=tablelink href="{{ clusters }}/delete/{{ i['id'] }}">Delete</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ clusters }}update/{{ i['id'] }}">Update</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ clusters }}delete/{{ i['id'] }}">Delete</a></td>
         	 </tr>
              {% endfor %}
   	  {% endif %} 
@@ -62,7 +62,7 @@
          <h3><a class=tablelink href="{{ clusters }}create">Create new cluster</a></h3>
         {% elif action == 'Update' %}
             <h2>Cluster Update</h2>
-            <form action="{{ clusters }}/update/{{ data['id'] }}" method="POST">
+            <form action="{{ clusters }}update/{{ data['id'] }}" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>

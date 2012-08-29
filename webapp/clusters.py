@@ -37,3 +37,14 @@ def create_clusters(id=None):
                                 extra=data)
     else:
         return cluster_template(htmlfile=htmlfile, action='List')
+
+@clusters.route('/delete/<id>', methods=["GET"])
+def delete_clusters(id=None):
+    cluster_url = current_app.base_url + "clusters/"
+    delete_url = cluster_url + id
+   
+    current_app.build_request(delete_url, "DELETE")
+    data = json.loads(current_app.build_request(cluster_url, "GET"))
+    return cluster_template(htmlfile=htmlfile,
+                            action='List',
+                            extra=data)
