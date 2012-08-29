@@ -17,7 +17,7 @@
   <div id="text">
         {% if action == 'Create' %}
             <h2>Cluster Creation</h2>
-            <form action="{{ clusters }}/create" method="POST">
+            <form action="{{ clusters }}create" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
@@ -59,7 +59,7 @@
   	  {% endif %} 
          </table>
 	 <br><br>
-         <h3><a class=tablelink href="{{ clusters }}/create">Create new cluster</a></h3>
+         <h3><a class=tablelink href="{{ clusters }}create">Create new cluster</a></h3>
         {% elif action == 'Update' %}
             <h2>Cluster Update</h2>
             <form action="{{ clusters }}/update/{{ data['id'] }}" method="POST">
