@@ -20,6 +20,9 @@ def list_clusters():
                            action='List',
                            extra=data)
 
+# TODO: Template and route for cluster details
+# @clusters.route('/<id', methods=["GET"]
+
 @clusters.route('/create', methods=["GET", "POST"])
 def create_clusters():
     cluster_url = current_app.base_url + "clusters/"
@@ -38,7 +41,7 @@ def create_clusters():
     else:
         return cluster_template(htmlfile=htmlfile, action='List')
 
-@clusters.route('/update/<id>', methods=["GET"])
+@clusters.route('/update/<id>', methods=["GET", "POST"])
 def update_clusters(id=None):
     cluster_url = current_app.base_url + "clusters/"
     update_url = cluster_url + id
@@ -51,7 +54,7 @@ def update_clusters(id=None):
     elif request.method == "POST":
         jdata = json.dumps({"name": request.form['cluster_name'],
                             "description": request.form['cluster_descr']}).encode('utf-8')
-        build_request(update_url, "PUT", jdata)
+        current_app.build_request(update_url, "PUT", jdata)
         data = json.loads(current_app.build_request(cluster_url, "GET"))
         return cluster_template(htmlfile=htmlfile,
                                 action='List',
