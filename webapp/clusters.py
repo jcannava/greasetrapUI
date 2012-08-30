@@ -8,6 +8,8 @@ htmlfile = 'cluster.html'
 def cluster_template(htmlfile=None, extra=None, action=None):
     return render_template(htmlfile,
                            clusters=url_for('.index'),
+                           nodes=url_for('nodes.index'),
+                           roles=url_for('roles.index'),
                            css=url_for('.static', filename='site.css'),
                            action=action,
                            data=extra) 

@@ -7,7 +7,9 @@ htmlfile = 'node.html'
 
 def node_template(htmlfile=None, extra=None, action=None, cluster_data=None, role_data=None):
     return render_template(htmlfile,
+			   clusters=url_for('clusters.index'),
                            nodes=url_for('.index'),
+                           roles=url_for('roles.index'),
                            css=url_for('.static', filename='site.css'),
                            action=action,
                            data=extra,

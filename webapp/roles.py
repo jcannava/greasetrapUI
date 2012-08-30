@@ -7,6 +7,8 @@ htmlfile = 'role.html'
 
 def role_template(htmlfile=None, extra=None, action=None):
     return render_template(htmlfile,
+                           clusters=url_for('clusters.index'),
+                           nodes=url_for('nodes.index'),
                            roles=url_for('.index'),
                            css=url_for('.static', filename='site.css'),
                            action=action,
