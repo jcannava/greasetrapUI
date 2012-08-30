@@ -42,10 +42,7 @@ def create_nodes():
                             "cluster_id": request.form['cluster'],
                             "role_id": request.form['role']}).encode('utf-8')
         current_app.build_request(node_url, "POST", jdata)
-        data = json.loads(build_request(node_url, "GET"))
-        return node_template(htmlfile=htmlfile,
-                             action="List",
-                             extra=data)
+        return list_nodes()
 
 @nodes.route('/update/<id>', methods=["GET", "POST"])
 def update_nodes(id=None):
@@ -68,17 +65,11 @@ def update_nodes(id=None):
                             "cluster_id": request.form['cluster'],
                             "role_id": request.form['role']}).encode('utf-8')
         current_app.build_request(update_url, "PUT", jdata)
-        data = json.loads(build_request(node_url, "GET"))
-        return node_template(htmlfile=htmlfile,
-                             action="List",
-                             extra=data)
+        return list_nodes()
 
 @nodes.route('/delete/<id>', methods=["GET"])
 def delete_nodes(id=None):
     node_url = current_app.base_url + "nodes/"
     delete_url = node_url + id
     current_app.build_request(delete_url, "DELETE")
-    data = json.loads(build_request(node_url, "GET"))
-    return node_template(htmlfile=htmlfile,
-                         action="List",
-                         extra=data)
+    return list_nodes()

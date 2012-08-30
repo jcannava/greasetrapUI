@@ -28,6 +28,7 @@ def cluster_detail(id=None):
     return cluster_template(htmlfile=htmlfile,
                             action='Detail',
                             extra=data)
+               
 
 
 @clusters.route('/create', methods=["GET", "POST"])
@@ -41,12 +42,10 @@ def create_clusters():
         jdata = json.dumps({"name": request.form['cluster_name'],
                             "description": request.form['cluster_descr']}).encode('utf-8')
         current_app.build_request(cluster_url, "POST", jdata)
-        data = json.loads(current_app.build_request(cluster_url, "GET"))
-        return cluster_template(htmlfile=htmlfile,
-                                action='List',
-                                extra=data)
+        return list_clusters()
+
     else:
-        return cluster_template(htmlfile=htmlfile, action='List')
+        return list_clusters()
 
 @clusters.route('/update/<id>', methods=["GET", "POST"])
 def update_clusters(id=None):
@@ -62,10 +61,7 @@ def update_clusters(id=None):
         jdata = json.dumps({"name": request.form['cluster_name'],
                             "description": request.form['cluster_descr']}).encode('utf-8')
         current_app.build_request(update_url, "PUT", jdata)
-        data = json.loads(current_app.build_request(cluster_url, "GET"))
-        return cluster_template(htmlfile=htmlfile,
-                                action='List',
-                                extra=data)
+        return list_clusters()
 
 @clusters.route('/delete/<id>', methods=["GET"])
 def delete_clusters(id=None):
@@ -73,7 +69,4 @@ def delete_clusters(id=None):
     delete_url = cluster_url + id
    
     current_app.build_request(delete_url, "DELETE")
-    data = json.loads(current_app.build_request(cluster_url, "GET"))
-    return cluster_template(htmlfile=htmlfile,
-                            action='List',
-                            extra=data)
+    return list_clusters()
