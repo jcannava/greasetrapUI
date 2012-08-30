@@ -17,7 +17,7 @@
   <div id="text">
         {% if action == 'Create' %}
             <h2>Role Creation</h2>
-            <form action="{{ roles }}/create" method="POST">
+            <form action="{{ roles }}create" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
@@ -51,17 +51,17 @@
                          <td class=tablerow>{{ v }}</td>
                      {% endif %}
                  {% endfor %}
-                 <td class=tablerow><a class=tablelink href="{{ roles }}/update/{{ i['id'] }}">Update</a></td>
-                 <td class=tablerow><a class=tablelink href="{{ roles }}/delete/{{ i['id'] }}">Delete</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ roles }}update/{{ i['id'] }}">Update</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ roles }}delete/{{ i['id'] }}">Delete</a></td>
         	 </tr>
              {% endfor %}
   	  {% endif %} 
          </table>
 	 <br><br>
-         <h3><a class=tablelink href="{{ roles }}/create">Create new role</a></h3>
+         <h3><a class=tablelink href="{{ roles }}create">Create new role</a></h3>
         {% elif action == 'Update' %}
             <h2>Role Update</h2>
-            <form action="{{ roles }}/update/{{ data['id'] }}" method="POST">
+            <form action="{{ roles }}update/{{ data['id'] }}" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>

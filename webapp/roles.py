@@ -19,3 +19,40 @@ def list_roles():
     return role_template(htmlfile=htmlfile,
                          action='List',
                          extra=json.loads(current_app.build_request(role_url, "GET")))
+
+@roles.route('/create', methods=["GET", "POST"])
+def create_roles():
+    role_url = current_app.base_url + "roles/"
+    
+    if request.method == "GET":
+        return role_template(htmlfile=htmlfile, action='Create')
+
+    elif request.method == "POST":
+        jdata = json.dumps({"name": request.form['role_name'],
+                            "description": request.form['role_descr']}).encode('utf-8')
+        current_app.build_request(role_url, "POST", jdata)
+        return list_roles()
+
+@roles.route('/update/<id>', methods=["GET", "POST"])
+def update_roles(id=None):
+    role_url = current_app.base_url + "roles/"
+    update_url = role_url + id
+
+    if request.method == "GET":
+        return role_template(htmlfile=htmlfile, 
+                             action='Update',
+                             extra=json.loads(current_app.build_request(update_url, "GET")))
+
+    elif request.method == "POST":
+        jdata = json.dumps({"name": request.form['role_name'],
+                            "description": request.form['role_descr']}).encode('utf-8')
+        current_app.build_request(update_url, "PUT", jdata)
+        return list_roles()
+
+@roles.route('/delete/<id>', methods=["GET"])
+def delete_roles(id=None):
+    role_url = current_app.base_url + "roles/"
+    delete_url = role_url + id
+
+    current_app.build_request(delete_url, "DELETE")
+    return list_roles()
