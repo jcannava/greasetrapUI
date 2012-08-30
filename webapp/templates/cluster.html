@@ -16,16 +16,16 @@
   </div>
   <div id="text">
         {% if action == 'Create' %}
-            <h2>Role Creation</h2>
-            <form action="{{ roles }}/create" method="POST">
+            <h2>Cluster Creation</h2>
+            <form action="{{ clusters }}create" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
-                  <td><input type=text name=role_name></td>
+                  <td><input type=text name=cluster_name></td>
                  </tr>
                  <tr>
                   <td>Description:</td>
-                  <td><input type=text name=role_descr></td>
+                  <td><input type=text name=cluster_descr></td>
                  </tr>
                  <tr>
                   <td></td>
@@ -33,43 +33,50 @@
                 </table>
             </form>
         {% elif action == 'List' %}
-         <h2> List of Roles: </h2><hr>
+         <h2> List of Clusters: </h2><hr>
          <table border=0 cellspacing=0 cellpadding=0 width=100%>
          <tr>
-           <td class=tableheader>Description</td>
            <td class=tableheader>Name</td>
+           <td class=tableheader>Description</td>
+           <td class=tableheader>Extra</td>
+           <td class=tableheader>Details</td>
            <td class=tableheader>Update</td>
            <td class=tableheader>Delete</td>
          </tr>
           {% if data %}
-             {% for i in data['roles'] %}
+             {% for i in data['clusters'] %}
                  <tr>
-                 {% for k,v in i.items() %}
-                     {% if k == "id" %}
-                         {% set id = v %}
-                     {% else %}
-                         <td class=tablerow>{{ v }}</td>
-                     {% endif %}
-                 {% endfor %}
-                 <td class=tablerow><a class=tablelink href="{{ roles }}/update/{{ i['id'] }}">Update</a></td>
-                 <td class=tablerow><a class=tablelink href="{{ roles }}/delete/{{ i['id'] }}">Delete</a></td>
+                 <td class=tablerow>{{ i['name'] }}</td>
+                 <td class=tablerow>{{ i['description'] }}</td>
+                 <td class=tablerow>{{ i['extra'] }}</td>
+                 <td class=tablerow><a class=tablelink href="{{ clusters }}{{ i['id'] }}">Details</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ clusters }}update/{{ i['id'] }}">Update</a></td>
+                 <td class=tablerow><a class=tablelink href="{{ clusters }}delete/{{ i['id'] }}">Delete</a></td>
         	 </tr>
              {% endfor %}
   	  {% endif %} 
          </table>
 	 <br><br>
-         <h3><a class=tablelink href="{{ roles }}/create">Create new role</a></h3>
+         <h3><a class=tablelink href="{{ clusters }}create">Create new cluster</a></h3>
+        {% elif action == 'Detail' %}
+            <h2>Cluster Details for {{ data['name'] }}</h2>
+               Name: {{ data['name']}}<br>
+               Description: {{ data['description'] }}<br><br>
+               Configuration:<br> {{ data['config'] }}<br>
+  
+               <br><br>
+               <a class=tablelink href="{{ clusters }}">Back</a>
         {% elif action == 'Update' %}
-            <h2>Role Update</h2>
-            <form action="{{ roles }}/update/{{ data['id'] }}" method="POST">
+            <h2>Cluster Update</h2>
+            <form action="{{ clusters }}update/{{ data['id'] }}" method="POST">
                 <table width="100%" border=0>
                  <tr>
                   <td>Name:</td>
-                  <td><input type=text name=role_name value="{{ data['name'] }}"></td>
+                  <td><input type=text name=cluster_name value="{{ data['name'] }}"></td>
                  </tr>
                  <tr>
                   <td>Description:</td>
-                  <td><input type=text name=role_descr value="{{ data['description'] }}"></td>
+                  <td><input type=text name=cluster_descr value="{{ data['description'] }}"></td>
                  </tr>
                  <tr>
                   <td></td>
