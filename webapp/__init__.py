@@ -11,7 +11,7 @@ import httplib2
 
 class GreaseTrapUI(Flask):
     def __init__(self, name, configFile=None, configHash=None, debug=False):
-        super(GreaseTrapUI, self).__init__(name)
+        super(GreaseTrapUI, self).__init__(name, static_folder="webapp/static", template_folder="webapp/templates")
 
         defaults = {'main':
                 { 'bind_address': '0.0.0.0',
@@ -46,6 +46,24 @@ class GreaseTrapUI(Flask):
             LOG.setLevel(defaults['main']['loglevel'])
 
         # Register Blueprints
+        @self.route('/', methods=["GET"])
+        def index():
+            return render_template('index.html',
+                                   clusters=url_for('clusters.index'),
+                                   nodes=url_for('nodes.index'),
+                                   roles=url_for('roles.index'),
+                                   css=url_for('static', filename='site.css'))
+  
+        @self.errorhandler(StandardError)
+        def special_exception_handler(error):
+            error = "It appears that the Roush API has vanished. " + str(error)
+            return render_template('exception.html', 
+                                   clusters=url_for('clusters.index'),
+                                   nodes=url_for('nodes.index'),
+                                   roles=url_for('roles.index'),
+                                   css=url_for('static', filename='site.css'),
+                                   data=error)
+
         self.register_blueprint(clusters, url_prefix='/clusters')
         self.register_blueprint(nodes, url_prefix='/nodes')
         self.register_blueprint(roles, url_prefix='/roles')
@@ -63,5 +81,11 @@ class GreaseTrapUI(Flask):
     def build_request(self, url=None, verb=None, data=None):
         headers = {"Content-Type": "application/json"}
         conn = httplib2.Http()
-        resp, content = conn.request(url, verb, data, headers)
+        try:
+            resp, content = conn.request(url, verb, data, headers)
+
+        except StandardError, e:
+            return str(e)
+
         return content
+
