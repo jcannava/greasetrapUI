@@ -4,6 +4,7 @@ from pprint import pprint
 from clusters import clusters
 from nodes import nodes
 from roles import roles
+from tasks import tasks
 
 import logging
 import json
@@ -67,6 +68,7 @@ class GreaseTrapUI(Flask):
         self.register_blueprint(clusters, url_prefix='/clusters')
         self.register_blueprint(nodes, url_prefix='/nodes')
         self.register_blueprint(roles, url_prefix='/roles')
+        self.register_blueprint(tasks, url_prefix='/tasks')
         self.testing = True
         
         # Set globals
