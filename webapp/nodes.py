@@ -27,6 +27,7 @@ def list_nodes():
 @nodes.route('/create', methods=["GET", "POST"])
 def create_nodes():
     node_url = current_app.base_url + "nodes/"
+
     cluster_url = current_app.base_url + "clusters/"
     role_url = current_app.base_url + "roles/"
 
@@ -51,13 +52,16 @@ def update_nodes(id=None):
     node_url = current_app.base_url + "nodes/"
     update_url = node_url + id
 
+    cluster_url = current_app.base_url + "clusters/"
+    role_url = current_app.base_url + "roles/"
+
     cluster_data = json.loads(current_app.build_request(cluster_url, "GET"))
     role_data = json.loads(current_app.build_request(role_url, "GET"))
 
     if request.method == "GET":
-        data = current_app.build_request(update_url, "GET")
+        data = json.loads(current_app.build_request(update_url, "GET"))
         return node_template(htmlfile=htmlfile,
-                             action='Upate',
+                             action='Update',
                              extra=data,
                              cluster_data=cluster_data,
                              role_data=role_data)
