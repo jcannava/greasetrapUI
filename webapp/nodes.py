@@ -1,20 +1,30 @@
 from pprint import pprint
-from flask import Blueprint, Flask, session, render_template, url_for, request, current_app
+from flask import Blueprint, Flask, session, render_template, url_for
+from flask import request, current_app
 import json
 
-nodes = Blueprint('nodes', __name__, template_folder='templates', static_folder='static')
+nodes = Blueprint('nodes',
+                  __name__,
+                  template_folder='templates',
+                  static_folder='static')
 htmlfile = 'node.html'
 
-def node_template(htmlfile=None, extra=None, action=None, cluster_data=None, role_data=None):
+
+def node_template(htmlfile=None,
+                  extra=None,
+                  action=None,
+                  cluster_data=None,
+                  role_data=None):
     return render_template(htmlfile,
-			   clusters=url_for('clusters.index'),
+                           clusters=url_for('clusters.index'),
                            nodes=url_for('.index'),
                            roles=url_for('roles.index'),
                            css=url_for('.static', filename='site.css'),
                            action=action,
                            data=extra,
                            cluster_list=cluster_data,
-                           role_list=role_data) 
+                           role_list=role_data)
+
 
 @nodes.route('/', endpoint='index', methods=["GET"])
 def list_nodes():
@@ -22,7 +32,9 @@ def list_nodes():
     data = json.loads(current_app.build_request(node_url, "GET"))
     return node_template(htmlfile=htmlfile,
                          action='List',
-                         extra=json.loads(current_app.build_request(node_url, "GET")))
+                         extra=json.loads(
+                         current_app.build_request(node_url, "GET")))
+
 
 @nodes.route('/create', methods=["GET", "POST"])
 def create_nodes():
@@ -33,7 +45,7 @@ def create_nodes():
 
     cluster_data = json.loads(current_app.build_request(cluster_url, "GET"))
     role_data = json.loads(current_app.build_request(role_url, "GET"))
- 
+
     if request.method == "GET":
         return node_template(htmlfile=htmlfile,
                              action='Create',
@@ -46,6 +58,7 @@ def create_nodes():
                             "role_id": request.form['role']}).encode('utf-8')
         current_app.build_request(node_url, "POST", jdata)
         return list_nodes()
+
 
 @nodes.route('/update/<id>', methods=["GET", "POST"])
 def update_nodes(id=None):
@@ -72,6 +85,7 @@ def update_nodes(id=None):
                             "role_id": request.form['role']}).encode('utf-8')
         current_app.build_request(update_url, "PUT", jdata)
         return list_nodes()
+
 
 @nodes.route('/delete/<id>', methods=["GET"])
 def delete_nodes(id=None):
