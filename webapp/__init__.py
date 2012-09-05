@@ -10,16 +10,23 @@ import logging
 import json
 import httplib2
 
-class GreaseTrapUI(Flask):
-    def __init__(self, name, configFile=None, configHash=None, debug=False):
-        super(GreaseTrapUI, self).__init__(name, static_folder="webapp/static", template_folder="webapp/templates")
 
-        defaults = {'main':
-                { 'bind_address': '0.0.0.0',
-                  'bind_port': '8081',
-                  'roush_address': '127.0.0.1',
-                  'roush_port': '8080',
-                  'loglevel': 'WARNING'}}
+class GreaseTrapUI(Flask):
+    def __init__(self,
+                 name,
+                 configFile=None,
+                 configHash=None,
+                 debug=False):
+        super(GreaseTrapUI, self).__init__(name,
+                                           static_folder="webapp/static",
+                                           template_folder="webapp/templates")
+
+        defaults = {'main': {
+                    'bind_address': '0.0.0.0',
+                    'bind_port': '8081',
+                    'roush_address': '127.0.0.1',
+                    'roush_port': '8080',
+                    'loglevel': 'WARNING'}}
 
         if configFile:
             config = ConfigParser()
@@ -33,7 +40,7 @@ class GreaseTrapUI(Flask):
 
         if debug:
             LOG.setLevel(logging.DEBUG)
-        else: 
+        else:
             LOG.setLevel(logging.WARNING)
 
         if 'logfile' in defaults['main']:
@@ -54,11 +61,11 @@ class GreaseTrapUI(Flask):
                                    nodes=url_for('nodes.index'),
                                    roles=url_for('roles.index'),
                                    css=url_for('static', filename='site.css'))
-  
+
         @self.errorhandler(StandardError)
         def special_exception_handler(error):
             error = "It appears that the Roush API has vanished. " + str(error)
-            return render_template('exception.html', 
+            return render_template('exception.html',
                                    clusters=url_for('clusters.index'),
                                    nodes=url_for('nodes.index'),
                                    roles=url_for('roles.index'),
@@ -70,11 +77,11 @@ class GreaseTrapUI(Flask):
         self.register_blueprint(roles, url_prefix='/roles')
         self.register_blueprint(tasks, url_prefix='/tasks')
         self.testing = True
-        
+
         # Set globals
-        self.base_url = "http://%s:%d/" % ( 
-                            self.config['main']['roush_address'], 
-                            int(self.config['main']['roush_port']))
+        self.base_url = "http://%s:%d/" % (
+                        self.config['main']['roush_address'],
+                        int(self.config['main']['roush_port']))
 
     def run(self):
         super(GreaseTrapUI, self).run(host=self.config['main']['bind_address'],
@@ -90,4 +97,3 @@ class GreaseTrapUI(Flask):
             return str(e)
 
         return content
-
