@@ -12,20 +12,25 @@
       <li><a href="{{ clusters }}">Clusters</a></li>
       <li><a href="{{ nodes }}">Nodes</a></li>
       <li><a href="{{ roles }}">Roles</a></li>
+      <li><a href="{{ tasks }}">Tasks</a></li>
     </ul>
   </div>
   <div id="text">
         {% if action == 'Create' %}
-            <h2>Cluster Creation</h2>
-            <form action="{{ clusters }}create" method="POST">
+            <h2>Task Creation</h2>
+            <form action="{{ tasks }}create" method="POST">
                 <table width="100%" border=0>
                  <tr>
-                  <td>Name:</td>
-                  <td><input type=text name=cluster_name></td>
+                  <td>Host to execute task:</td>
+                  <td><select name=node>
+                      {% for i in node_list['nodes'] %}
+                          <option value="{{ i['id'] }}">{{ i['hostname'] }} </option>
+                      {% endfor %}
+                  </td>
                  </tr>
                  <tr>
-                  <td>Description:</td>
-                  <td><input type=text name=cluster_descr></td>
+                  <td>Action:</td>
+                  <td><input type=text name=action></td>
                  </tr>
                  <tr>
                   <td></td>
@@ -58,31 +63,6 @@
          </table>
 	 <br><br>
          <h3><a class=tablelink href="{{ tasks }}create">Create new task</a></h3>
-        {% elif action == 'Detail' %}
-            <h2>Cluster Details for {{ data['name'] }}</h2>
-               Name: {{ data['name']}}<br>
-               Description: {{ data['description'] }}<br><br>
-               Configuration:<br> {{ data['config'] }}<br>
-  
-               <br><br>
-               <a class=tablelink href="{{ clusters }}">Back</a>
-        {% elif action == 'Update' %}
-            <h2>Cluster Update</h2>
-            <form action="{{ clusters }}update/{{ data['id'] }}" method="POST">
-                <table width="100%" border=0>
-                 <tr>
-                  <td>Name:</td>
-                  <td><input type=text name=cluster_name value="{{ data['name'] }}"></td>
-                 </tr>
-                 <tr>
-                  <td>Description:</td>
-                  <td><input type=text name=cluster_descr value="{{ data['description'] }}"></td>
-                 </tr>
-                 <tr>
-                  <td></td>
-                  <td><input type=submit name='update' value='Update'></td>
-                </table>
-            </form>
         {% endif %} 
   </div>
   <div id="footer">
