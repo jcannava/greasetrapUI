@@ -49,6 +49,8 @@ def create_clusters():
 
     elif request.method == "POST":
         jdata = json.dumps({"name": request.form['cluster_name'],
+                            "config": 
+                            json.loads(request.form['cluster_override']),
                             "description":
                             request.form['cluster_descr']}).encode('utf-8')
         current_app.build_request(cluster_url, "POST", jdata)
