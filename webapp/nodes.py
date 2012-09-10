@@ -14,7 +14,8 @@ def node_template(htmlfile=None,
                   extra=None,
                   action=None,
                   cluster_data=None,
-                  role_data=None):
+                  role_data=None,
+                  node_data=None):
     return render_template(htmlfile,
                            clusters=url_for('clusters.index'),
                            nodes=url_for('.index'),
@@ -24,7 +25,8 @@ def node_template(htmlfile=None,
                            action=action,
                            data=extra,
                            cluster_list=cluster_data,
-                           role_list=role_data)
+                           role_list=role_data,
+                           node_data=node_data)
 
 
 @nodes.route('/', endpoint='index', methods=["GET"])
@@ -46,20 +48,32 @@ def create_nodes():
 
     cluster_data = json.loads(current_app.build_request(cluster_url, "GET"))
     role_data = json.loads(current_app.build_request(role_url, "GET"))
+    node_data = json.loads(current_app.build_request(node_url, "GET"))
 
     if request.method == "GET":
         return node_template(htmlfile=htmlfile,
                              action='Create',
                              cluster_data=cluster_data,
-                             role_data=role_data)
+                             role_data=role_data,
+                             node_data=node_data['nodes'])
 
     elif request.method == "POST":
         jdata = json.dumps({"hostname": request.form['hostname'],
-                            "cluster_id": request.form['cluster'],
+            "cluster_id": request.form['cluster'],
                             "role_id": request.form['role']}).encode('utf-8')
         current_app.build_request(node_url, "POST", jdata)
         return list_nodes()
 
+@nodes.route('/details/<id>', methods=["GET"])
+def node_detail(id=None):
+    node_url = current_app.base_url + "nodes/" + id
+    node = current_app.build_request(node_url, "GET")
+    node_data = json.loads(node)
+    return node_template(htmlfile=htmlfile,
+                         action='Details',
+                         extra=id,
+                         node_data=node_data)
+    
 
 @nodes.route('/update/<id>', methods=["GET", "POST"])
 def update_nodes(id=None):
