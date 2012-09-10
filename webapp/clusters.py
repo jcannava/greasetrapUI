@@ -72,7 +72,10 @@ def update_clusters(id=None):
                                 current_app.build_request(update_url, "GET")))
 
     elif request.method == "POST":
+        pprint(request.form['cluster_override'])
         jdata = json.dumps({"name": request.form['cluster_name'],
+                            "config":
+                            json.loads(request.form['cluster_override']),
                             "description":
                             request.form['cluster_descr']}).encode('utf-8')
         current_app.build_request(update_url, "PUT", jdata)

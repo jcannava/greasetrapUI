@@ -10,7 +10,10 @@ tasks = Blueprint('tasks',
                   static_folder='static')
 htmlfile = 'task.html'
 
-def task_template(htmlfile=None, extra=None, action=None, node_list=None):
+def task_template(htmlfile=None,
+                  extra=None,
+                  action=None,
+                  node_list=None):
     return render_template(htmlfile,
                            clusters=url_for('clusters.index'),
                            nodes=url_for('nodes.index'),

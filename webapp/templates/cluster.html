@@ -28,6 +28,10 @@
                   <td>Description:</td>
                   <td><input type=text name=cluster_descr></td>
                  </tr>
+		 <tr>
+		  <td>Configuration Override:</td>
+		  <td><textarea name="cluster_override" rows=10 columns=20>{ "nova": { "apply_patches": true } }</textarea></td>
+		 </tr>
                  <tr>
                   <td></td>
                   <td><input type=submit name='create' value='Create'></td>
@@ -79,6 +83,10 @@
                   <td>Description:</td>
                   <td><input type=text name=cluster_descr value="{{ data['description'] }}"></td>
                  </tr>
+		 <tr>
+		  <td>Configuration Override:</td>
+		  <td><textarea name=cluster_override rows=10 columns=20>{{ data['config'] }}</textarea></td>
+		 </tr>
                  <tr>
                   <td></td>
                   <td><input type=submit name='update' value='Update'></td>

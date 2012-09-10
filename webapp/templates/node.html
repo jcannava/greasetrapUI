@@ -42,6 +42,9 @@
                       </select>
                     </td>
                    </tr>
+		 <tr>
+	          <td>Override Configuration: </td>
+		  <td><textarea rows=10 columns=20>{{ node_data['config'] }}</textarea></td>
                  <tr>
                   <td></td>
                   <td><input type=submit name='create' value='Create'></td>
@@ -56,6 +59,7 @@
            <td class=tableheader>Role_ID</td>
            <td class=tableheader>Update</td>
            <td class=tableheader>Delete</td>
+	   <td class=tableheader>Details</td>
          </tr>
           {% if data %}
              {% for i in data['nodes'] %}
@@ -65,6 +69,7 @@
                  <td class=tablerow>{{ i['role_id'] }}</td>
                  <td class=tablerow><a class=tablelink href="{{ nodes }}update/{{ i['id'] }}">Update</a></td>
                  <td class=tablerow><a class=tablelink href="{{ nodes }}delete/{{ i['id'] }}">Delete</a></td>
+		 <td class=tablerow><a class=tablelink href="{{ nodes }}details/{{ i['id'] }}">Details</a></td>
                  </tr>
              {% endfor %}
           {% endif %} 
@@ -96,12 +101,27 @@
                       {% endfor %}
                       </select>
                     </td>
-                   </tr>
+                 </tr>
+		 <tr>
+	          <td>Override Configuration: </td>
+		  <td><textarea rows=10 columns=20>{{ data['config'] }}</textarea></td>
+                 </tr>
                  <tr>
                   <td></td>
                   <td><input type=submit name='update' value='Update'></td>
                 </table>
             </form>
+      {% elif action == 'Details' %}
+          <table border=0 width="100%">
+          {% for k in node_data %}
+	  <tr>
+             <td class="tableheader">{{ k }}</td>
+	     <td>{{ node_data[k] }}</td>
+	  </tr>
+	  {% endfor %}
+          </table>
+	  <br><br>
+	  <a class=tablelink href="{{ nodes }}update/{{ data }}">Update this node</a>
       {% endif %}
   </div>
   <div id="footer">
