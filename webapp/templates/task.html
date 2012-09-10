@@ -23,8 +23,8 @@
                  <tr>
                   <td>Host to execute task:</td>
                   <td><select name=node>
-                      {% for i in node_list['nodes'] %}
-                          <option value="{{ i['id'] }}">{{ i['hostname'] }} </option>
+                      {% for i in node_list %}
+                          <option value="{{ i['id'] }}">{{ i['hostname'] }}</option>
                       {% endfor %}
                   </td>
                  </tr>
